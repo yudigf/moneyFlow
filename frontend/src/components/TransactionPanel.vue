@@ -107,14 +107,14 @@ onMounted(fetchAll)
 </script>
 
 <template>
-  <div>
-    <div class="flex items-center justify-between mb-6">
+  <div class="max-w-4xl mx-auto">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
       <div>
-        <h2 class="text-2xl font-bold text-white">Transaksi</h2>
-        <p class="text-surface-400 text-sm mt-1">Riwayat semua transaksi kamu</p>
+        <h2 class="text-3xl font-bold text-white tracking-tight">Transaksi</h2>
+        <p class="text-surface-400 text-sm sm:text-base mt-1">Riwayat semua transaksi kamu</p>
       </div>
-      <button @click="openCreateForm" class="flex items-center gap-2 bg-primary-600 hover:bg-primary-500 text-white px-4 py-2.5 rounded-xl font-medium transition-all cursor-pointer">
-        <span class="text-lg">+</span> <span class="hidden sm:inline">Tambah Transaksi</span>
+      <button @click="openCreateForm" class="flex items-center justify-center gap-2 bg-gradient-to-r from-primary-600 to-primary-500 hover:from-primary-500 hover:to-primary-400 text-white px-5 py-3.5 sm:px-4 sm:py-2.5 rounded-2xl sm:rounded-xl font-bold transition-all cursor-pointer shadow-lg shadow-primary-500/25">
+        <span class="text-xl sm:text-lg">+</span> <span>Tambah Transaksi</span>
       </button>
     </div>
 

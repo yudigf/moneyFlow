@@ -92,7 +92,7 @@ function handleNavigate(tabKey) {
       </nav>
 
       <!-- Content -->
-      <main class="max-w-5xl mx-auto px-4 sm:px-6 py-6 animate-fade-in w-full">
+      <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 animate-fade-in w-full">
         <HomePanel v-if="activeTab === 'home'" @navigate="handleNavigate" />
         <WalletPanel v-else-if="activeTab === 'wallets'" />
         <TransactionPanel v-else-if="activeTab === 'transactions'" />
