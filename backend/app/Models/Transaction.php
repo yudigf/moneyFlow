@@ -58,4 +58,64 @@ class Transaction extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    /**
+     * Boot the model and register event listeners for balance calculations.
+     */
+    protected static function booted()
+    {
+        static::created(function ($transaction) {
+            $transaction->applyBalance();
+        });
+
+        static::deleted(function ($transaction) {
+            $transaction->revertBalance();
+        });
+
+        static::updating(function ($transaction) {
+            // Revert the old values before the update happens
+            $original = new self();
+            $original->forceFill($transaction->getOriginal());
+            $original->revertBalance();
+        });
+
+        static::updated(function ($transaction) {
+            // Apply the new values
+            $transaction->applyBalance();
+        });
+    }
+
+    /**
+     * Apply the transaction amount to the wallets.
+     */
+    public function applyBalance()
+    {
+        if ($this->type === 'expense') {
+            Wallet::where('id', $this->wallet_id)->decrement('balance', $this->amount);
+        } elseif ($this->type === 'income') {
+            Wallet::where('id', $this->wallet_id)->increment('balance', $this->amount);
+        } elseif ($this->type === 'transfer') {
+            Wallet::where('id', $this->wallet_id)->decrement('balance', $this->amount);
+            if ($this->destination_wallet_id) {
+                Wallet::where('id', $this->destination_wallet_id)->increment('balance', $this->amount);
+            }
+        }
+    }
+
+    /**
+     * Revert the transaction amount from the wallets.
+     */
+    public function revertBalance()
+    {
+        if ($this->type === 'expense') {
+            Wallet::where('id', $this->wallet_id)->increment('balance', $this->amount);
+        } elseif ($this->type === 'income') {
+            Wallet::where('id', $this->wallet_id)->decrement('balance', $this->amount);
+        } elseif ($this->type === 'transfer') {
+            Wallet::where('id', $this->wallet_id)->increment('balance', $this->amount);
+            if ($this->destination_wallet_id) {
+                Wallet::where('id', $this->destination_wallet_id)->decrement('balance', $this->amount);
+            }
+        }
+    }
 }
