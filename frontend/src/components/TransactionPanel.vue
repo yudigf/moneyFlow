@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import api from '../services/api.js'
 
 const transactions = ref([])
@@ -13,6 +13,19 @@ const form = ref({
   wallet_id: '', category_id: '', amount: '', type: 'expense',
   description: '', transaction_date: new Date().toISOString().slice(0, 10),
   destination_wallet_id: '',
+})
+
+const groupedTransactions = computed(() => {
+  const groups = {}
+  transactions.value.forEach(tx => {
+    const date = tx.transaction_date.slice(0, 10)
+    if (!groups[date]) groups[date] = []
+    groups[date].push(tx)
+  })
+  
+  return Object.keys(groups)
+    .sort((a, b) => new Date(b) - new Date(a))
+    .map(date => ({ date, transactions: groups[date] }))
 })
 
 async function fetchAll() {
@@ -73,7 +86,15 @@ function formatCurrency(v) {
   return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(v)
 }
 function formatDate(d) {
-  return new Date(d).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
+  const date = new Date(d)
+  const today = new Date()
+  const yesterday = new Date()
+  yesterday.setDate(yesterday.getDate() - 1)
+  
+  if (date.toDateString() === today.toDateString()) return 'Hari ini'
+  if (date.toDateString() === yesterday.toDateString()) return 'Kemarin'
+  
+  return date.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' })
 }
 
 const typeStyle = {
@@ -93,7 +114,7 @@ onMounted(fetchAll)
         <p class="text-surface-400 text-sm mt-1">Riwayat semua transaksi kamu</p>
       </div>
       <button @click="openCreateForm" class="flex items-center gap-2 bg-primary-600 hover:bg-primary-500 text-white px-4 py-2.5 rounded-xl font-medium transition-all cursor-pointer">
-        <span class="text-lg">+</span> Tambah Transaksi
+        <span class="text-lg">+</span> <span class="hidden sm:inline">Tambah Transaksi</span>
       </button>
     </div>
 
@@ -101,27 +122,29 @@ onMounted(fetchAll)
       <div class="w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full animate-spin"></div>
     </div>
 
-    <div v-else class="space-y-3">
-      <div v-for="tx in transactions" :key="tx.id" class="bg-surface-800/80 border border-surface-700 rounded-xl p-4 flex items-center justify-between group hover:border-surface-600 transition-all">
-        <div class="flex items-center gap-4">
-          <span class="text-2xl w-10 h-10 flex items-center justify-center rounded-xl bg-surface-700/50">{{ typeStyle[tx.type]?.icon }}</span>
-          <div>
-            <h3 class="font-medium text-white">{{ tx.description || tx.category?.name || typeStyle[tx.type]?.label }}</h3>
-            <div class="flex items-center gap-2 text-xs text-surface-400 mt-0.5">
-              <span>{{ tx.wallet?.name }}</span>
-              <span v-if="tx.type === 'transfer'">→ {{ tx.destination_wallet?.name }}</span>
-              <span>·</span>
-              <span>{{ formatDate(tx.transaction_date) }}</span>
+    <div v-else class="space-y-6">
+      <div v-for="group in groupedTransactions" :key="group.date" class="space-y-3">
+        <h3 class="text-sm font-semibold text-surface-400 pl-1 uppercase tracking-wider">{{ formatDate(group.date) }}</h3>
+        
+        <div v-for="tx in group.transactions" :key="tx.id" class="bg-surface-800/80 border border-surface-700 rounded-xl p-4 flex items-center justify-between group hover:border-surface-600 transition-all">
+          <div class="flex items-center gap-4">
+            <span class="text-2xl w-10 h-10 flex items-center justify-center rounded-xl bg-surface-700/50">{{ typeStyle[tx.type]?.icon }}</span>
+            <div>
+              <h3 class="font-medium text-white">{{ tx.description || tx.category?.name || typeStyle[tx.type]?.label }}</h3>
+              <div class="flex items-center gap-2 text-xs text-surface-400 mt-0.5">
+                <span>{{ tx.wallet?.name }}</span>
+                <span v-if="tx.type === 'transfer'">→ {{ tx.destination_wallet?.name }}</span>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="flex items-center gap-3">
-          <span :class="typeStyle[tx.type]?.cls" class="font-bold text-lg">
-            {{ tx.type === 'income' ? '+' : '-' }}{{ formatCurrency(parseFloat(tx.amount)) }}
-          </span>
-          <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-            <button @click="openEditForm(tx)" class="p-2 rounded-lg hover:bg-white/10 text-surface-400 hover:text-white cursor-pointer">✏️</button>
-            <button @click="deleteTx(tx)" class="p-2 rounded-lg hover:bg-red-500/20 text-surface-400 hover:text-red-400 cursor-pointer">🗑️</button>
+          <div class="flex items-center gap-3">
+            <span :class="typeStyle[tx.type]?.cls" class="font-bold text-lg">
+              {{ tx.type === 'income' ? '+' : '-' }}{{ formatCurrency(parseFloat(tx.amount)) }}
+            </span>
+            <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button @click="openEditForm(tx)" class="p-2 rounded-lg hover:bg-white/10 text-surface-400 hover:text-white cursor-pointer">✏️</button>
+              <button @click="deleteTx(tx)" class="p-2 rounded-lg hover:bg-red-500/20 text-surface-400 hover:text-red-400 cursor-pointer">🗑️</button>
+            </div>
           </div>
         </div>
       </div>
