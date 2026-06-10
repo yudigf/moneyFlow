@@ -33,6 +33,8 @@ class WalletController extends Controller
             'balance' => 'nullable|numeric|min:0',
         ]);
 
+        $validated['balance'] = $validated['balance'] ?? 0;
+
         $wallet = Wallet::create($validated);
 
         return response()->json([
@@ -63,6 +65,10 @@ class WalletController extends Controller
             'type'    => 'sometimes|required|string|in:bank,e-wallet,cash',
             'balance' => 'nullable|numeric|min:0',
         ]);
+
+        if (array_key_exists('balance', $validated)) {
+            $validated['balance'] = $validated['balance'] ?? 0;
+        }
 
         $wallet->update($validated);
 

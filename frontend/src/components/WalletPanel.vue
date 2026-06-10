@@ -51,10 +51,11 @@ function openEditForm(wallet) {
 
 async function saveWallet() {
   try {
+    const payload = { ...form.value, balance: form.value.balance || 0 }
     if (editingWallet.value) {
-      await api.put(`/wallets/${editingWallet.value.id}`, form.value)
+      await api.put(`/wallets/${editingWallet.value.id}`, payload)
     } else {
-      await api.post('/wallets', form.value)
+      await api.post('/wallets', payload)
     }
     showForm.value = false
     await fetchWallets()
