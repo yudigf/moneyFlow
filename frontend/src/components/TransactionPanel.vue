@@ -107,14 +107,14 @@ onMounted(fetchAll)
 </script>
 
 <template>
-  <div class="max-w-4xl mx-auto">
+  <div class="max-w-7xl mx-auto">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
       <div>
-        <h2 class="text-3xl font-bold text-white tracking-tight">Transaksi</h2>
-        <p class="text-surface-400 text-sm sm:text-base mt-1">Riwayat semua transaksi kamu</p>
+        <h2 class="text-3xl sm:text-4xl 2xl:text-5xl font-bold text-white tracking-tight">Transaksi</h2>
+        <p class="text-surface-400 text-sm sm:text-base 2xl:text-lg mt-1">Riwayat semua transaksi kamu</p>
       </div>
-      <button @click="openCreateForm" class="flex items-center justify-center gap-2 bg-gradient-to-r from-primary-600 to-primary-500 hover:from-primary-500 hover:to-primary-400 text-white px-5 py-3.5 sm:px-4 sm:py-2.5 rounded-2xl sm:rounded-xl font-bold transition-all cursor-pointer shadow-lg shadow-primary-500/25">
-        <span class="text-xl sm:text-lg">+</span> <span>Tambah Transaksi</span>
+      <button @click="openCreateForm" class="flex items-center justify-center gap-2 bg-gradient-to-r from-primary-600 to-primary-500 hover:from-primary-500 hover:to-primary-400 text-white px-5 py-3.5 sm:px-5 sm:py-3 2xl:px-6 2xl:py-4 rounded-2xl sm:rounded-xl font-bold transition-all cursor-pointer shadow-lg shadow-primary-500/25">
+        <span class="text-xl sm:text-lg 2xl:text-2xl">+</span> <span class="2xl:text-lg">Tambah Transaksi</span>
       </button>
     </div>
 

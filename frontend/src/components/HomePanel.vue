@@ -72,7 +72,7 @@ onMounted(() => {
       <div class="w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full animate-spin"></div>
     </div>
 
-    <div v-else class="lg:grid lg:grid-cols-12 lg:gap-8 lg:items-start space-y-6 lg:space-y-0">
+    <div v-else class="lg:grid lg:grid-cols-12 lg:gap-10 2xl:gap-16 lg:items-start space-y-6 lg:space-y-0">
       
       <!-- Left Column (Balance & Wallets) -->
       <div class="lg:col-span-7 xl:col-span-8 space-y-6">
@@ -83,24 +83,24 @@ onMounted(() => {
           <div class="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-5 rounded-full translate-y-1/3 -translate-x-1/4"></div>
           
           <div class="relative z-10">
-            <p class="text-primary-100 font-medium mb-1">Total Saldo Kamu</p>
-            <h2 class="text-4xl sm:text-5xl font-black text-white tracking-tight mb-6">
+            <p class="text-primary-100 font-medium mb-1 sm:text-lg">Total Saldo Kamu</p>
+            <h2 class="text-4xl sm:text-6xl 2xl:text-7xl font-black text-white tracking-tight mb-8">
               {{ formatCurrency(totalBalance) }}
             </h2>
             
             <!-- Quick Actions -->
-            <div class="grid grid-cols-3 gap-3">
-              <button @click="emit('navigate', 'transactions')" class="flex flex-col items-center justify-center bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-2xl py-3 transition-colors cursor-pointer">
-                <span class="text-2xl mb-1">⬇️</span>
-                <span class="text-xs font-semibold text-white">Pemasukan</span>
+            <div class="grid grid-cols-3 gap-3 2xl:gap-6">
+              <button @click="emit('navigate', 'transactions')" class="flex flex-col items-center justify-center bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-2xl py-3 2xl:py-5 transition-colors cursor-pointer">
+                <span class="text-2xl 2xl:text-4xl mb-1">⬇️</span>
+                <span class="text-xs sm:text-sm 2xl:text-base font-semibold text-white">Pemasukan</span>
               </button>
-              <button @click="emit('navigate', 'transactions')" class="flex flex-col items-center justify-center bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-2xl py-3 transition-colors cursor-pointer">
-                <span class="text-2xl mb-1">⬆️</span>
-                <span class="text-xs font-semibold text-white">Pengeluaran</span>
+              <button @click="emit('navigate', 'transactions')" class="flex flex-col items-center justify-center bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-2xl py-3 2xl:py-5 transition-colors cursor-pointer">
+                <span class="text-2xl 2xl:text-4xl mb-1">⬆️</span>
+                <span class="text-xs sm:text-sm 2xl:text-base font-semibold text-white">Pengeluaran</span>
               </button>
-              <button @click="emit('navigate', 'transactions')" class="flex flex-col items-center justify-center bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-2xl py-3 transition-colors cursor-pointer">
-                <span class="text-2xl mb-1">🔄</span>
-                <span class="text-xs font-semibold text-white">Transfer</span>
+              <button @click="emit('navigate', 'transactions')" class="flex flex-col items-center justify-center bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-2xl py-3 2xl:py-5 transition-colors cursor-pointer">
+                <span class="text-2xl 2xl:text-4xl mb-1">🔄</span>
+                <span class="text-xs sm:text-sm 2xl:text-base font-semibold text-white">Transfer</span>
               </button>
             </div>
           </div>
@@ -108,36 +108,36 @@ onMounted(() => {
 
         <!-- Cashflow Bulan Ini -->
         <div v-if="reportSummary" class="bg-surface-800/80 border border-surface-700 rounded-3xl p-6 shadow-sm">
-          <h3 class="text-lg font-bold text-white mb-4">Cashflow Bulan Ini</h3>
+          <h3 class="text-lg sm:text-xl 2xl:text-2xl font-bold text-white mb-4">Cashflow Bulan Ini</h3>
           
-          <div class="flex items-center justify-between text-sm mb-2">
+          <div class="flex items-center justify-between text-sm 2xl:text-base mb-2">
             <div class="flex flex-col">
               <span class="text-surface-400">Pemasukan</span>
-              <span class="font-bold text-emerald-400">{{ formatCurrency(reportSummary.totals.income) }}</span>
+              <span class="font-bold text-emerald-400 text-lg">{{ formatCurrency(reportSummary.totals.income) }}</span>
             </div>
             <div class="flex flex-col items-end">
               <span class="text-surface-400">Pengeluaran</span>
-              <span class="font-bold text-red-400">{{ formatCurrency(reportSummary.totals.expense) }}</span>
+              <span class="font-bold text-red-400 text-lg">{{ formatCurrency(reportSummary.totals.expense) }}</span>
             </div>
           </div>
           
-          <div class="h-4 bg-emerald-500/20 rounded-full overflow-hidden flex relative group mb-3">
+          <div class="h-4 2xl:h-6 bg-emerald-500/20 rounded-full overflow-hidden flex relative group mb-3">
             <div 
               class="h-full bg-gradient-to-r from-red-500 to-red-400 transition-all duration-1000 ease-out" 
               :style="{ width: `${expensePercentage}%` }"
             ></div>
           </div>
           
-          <p class="text-xs text-surface-400 text-center">
+          <p class="text-xs 2xl:text-sm text-surface-400 text-center">
             Kamu telah menghabiskan <span class="font-bold text-white">{{ expensePercentage }}%</span> dari pemasukanmu.
           </p>
         </div>
 
         <!-- Active Wallets -->
         <div>
-          <div class="flex items-center justify-between mb-3">
-            <h3 class="text-lg font-bold text-white">Dompet Aktif</h3>
-            <button @click="emit('navigate', 'wallets')" class="text-sm font-medium text-primary-400 hover:text-primary-300 cursor-pointer">Lihat Semua</button>
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg sm:text-xl 2xl:text-2xl font-bold text-white">Dompet Aktif</h3>
+            <button @click="emit('navigate', 'wallets')" class="text-sm 2xl:text-base font-medium text-primary-400 hover:text-primary-300 cursor-pointer">Lihat Semua</button>
           </div>
           <div class="flex gap-4 overflow-x-auto no-scrollbar pb-2">
             <div v-for="wallet in wallets" :key="wallet.id" class="min-w-[160px] bg-surface-800/80 border border-surface-700 rounded-2xl p-4 shadow-sm flex-shrink-0">
@@ -156,17 +156,17 @@ onMounted(() => {
       <!-- Right Column (Recent Transactions) -->
       <div class="lg:col-span-5 xl:col-span-4 sticky top-24 space-y-6">
         <div>
-          <div class="flex items-center justify-between mb-3">
-            <h3 class="text-lg font-bold text-white">Transaksi Terakhir</h3>
-            <button @click="emit('navigate', 'transactions')" class="text-sm font-medium text-primary-400 hover:text-primary-300 cursor-pointer">Semua Riwayat</button>
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg sm:text-xl 2xl:text-2xl font-bold text-white">Transaksi Terakhir</h3>
+            <button @click="emit('navigate', 'transactions')" class="text-sm 2xl:text-base font-medium text-primary-400 hover:text-primary-300 cursor-pointer">Semua Riwayat</button>
           </div>
           
           <div v-if="recentTransactions.length > 0" class="bg-surface-800/80 border border-surface-700 rounded-2xl overflow-hidden shadow-sm">
             <div v-for="(tx, index) in recentTransactions" :key="tx.id" 
-                 class="flex items-center justify-between p-4"
+                 class="flex items-center justify-between p-4 2xl:p-5"
                  :class="{ 'border-b border-surface-700': index !== recentTransactions.length - 1 }">
               <div class="flex items-center gap-4">
-                <div class="w-10 h-10 rounded-full flex items-center justify-center text-lg shadow-sm"
+                <div class="w-10 h-10 2xl:w-12 2xl:h-12 rounded-full flex items-center justify-center text-lg 2xl:text-xl shadow-sm"
                      :class="{
                        'bg-emerald-500/20 text-emerald-400': tx.type === 'income',
                        'bg-red-500/20 text-red-400': tx.type === 'expense',
@@ -175,12 +175,12 @@ onMounted(() => {
                   {{ tx.type === 'income' ? '⬇️' : (tx.type === 'expense' ? '⬆️' : '🔄') }}
                 </div>
                 <div>
-                  <p class="font-semibold text-surface-100 truncate max-w-[120px] sm:max-w-[150px]">{{ tx.description || tx.category?.name || (tx.type === 'transfer' ? 'Transfer Saldo' : 'Lainnya') }}</p>
-                  <p class="text-xs text-surface-400">{{ tx.wallet.name }} &bull; {{ formatDate(tx.transaction_date) }}</p>
+                  <p class="font-semibold text-surface-100 truncate max-w-[120px] sm:max-w-[150px] 2xl:text-lg 2xl:max-w-[200px]">{{ tx.description || tx.category?.name || (tx.type === 'transfer' ? 'Transfer Saldo' : 'Lainnya') }}</p>
+                  <p class="text-xs 2xl:text-sm text-surface-400">{{ tx.wallet.name }} &bull; {{ formatDate(tx.transaction_date) }}</p>
                 </div>
               </div>
               <div class="text-right">
-                <p class="font-bold whitespace-nowrap" :class="tx.type === 'income' ? 'text-emerald-400' : 'text-red-400'">
+                <p class="font-bold whitespace-nowrap 2xl:text-lg" :class="tx.type === 'income' ? 'text-emerald-400' : 'text-red-400'">
                   {{ tx.type === 'income' ? '+' : '-' }}{{ formatCurrency(tx.amount) }}
                 </p>
               </div>
@@ -193,9 +193,9 @@ onMounted(() => {
         </div>
 
         <!-- Top Expenses -->
-        <div v-if="topExpenses.length > 0" class="bg-surface-800/80 border border-surface-700 rounded-3xl p-5 shadow-sm">
-          <h3 class="text-base font-bold text-white mb-4 flex items-center gap-2">
-            <span class="text-xl">🔥</span> Pengeluaran Terbesar
+        <div v-if="topExpenses.length > 0" class="bg-surface-800/80 border border-surface-700 rounded-3xl p-5 2xl:p-6 shadow-sm">
+          <h3 class="text-base sm:text-lg 2xl:text-xl font-bold text-white mb-4 flex items-center gap-2">
+            <span class="text-xl 2xl:text-2xl">🔥</span> Pengeluaran Terbesar
           </h3>
           <div class="space-y-4">
             <div v-for="(item, index) in topExpenses" :key="index" class="flex items-center justify-between">

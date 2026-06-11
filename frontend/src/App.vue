@@ -30,7 +30,7 @@ function handleNavigate(tabKey) {
     <div class="relative z-10">
       <!-- Premium Glassmorphism Navbar (Desktop Top Nav) -->
       <nav class="sticky top-0 z-40 bg-surface-900/60 backdrop-blur-2xl border-b border-surface-700/50 shadow-lg shadow-black/10">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
           <div class="flex items-center justify-between h-[72px]">
             
             <!-- 1. Logo (Left) -->
@@ -92,7 +92,7 @@ function handleNavigate(tabKey) {
       </nav>
 
       <!-- Content -->
-      <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 animate-fade-in w-full">
+      <main class="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 py-8 animate-fade-in w-full">
         <HomePanel v-if="activeTab === 'home'" @navigate="handleNavigate" />
         <WalletPanel v-else-if="activeTab === 'wallets'" />
         <TransactionPanel v-else-if="activeTab === 'transactions'" />
