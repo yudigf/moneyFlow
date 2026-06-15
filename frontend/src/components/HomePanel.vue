@@ -1,6 +1,7 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import api from '../services/api.js'
+import { pollerState } from '../services/botPoller.js'
 
 const emit = defineEmits(['navigate'])
 
@@ -60,6 +61,16 @@ function formatDate(dateStr) {
   const date = new Date(dateStr)
   return date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
 }
+
+// Auto-refresh when the Telegram bot creates a new transaction
+watch(
+  () => pollerState.hasNewBotTransaction.value,
+  (hasNew) => {
+    if (hasNew) {
+      fetchData()
+    }
+  }
+)
 
 onMounted(() => {
   fetchData()
